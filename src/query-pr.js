@@ -1,9 +1,11 @@
+const logger = console;
+
 function buildQueryPRByOrg(org, nextCursor) {
-    let repositories = `repositories(first: 100)`;
-    if (nextCursor) {
-        repositories = repositories + `, after: "${nextCursor}"`
-    }
-    const query = `
+  let repositories = 'repositories(first: 100)';
+  if (nextCursor) {
+    repositories = `${repositories}, after: "${nextCursor}"`;
+  }
+  const query = `
     query {
         organization(login: "${org}") {
             ${repositories} {
@@ -21,17 +23,17 @@ function buildQueryPRByOrg(org, nextCursor) {
     }
 `;
 
-    return query;
+  return query;
 }
 
 function buildQueryPRSeach(status, type, org, repo, initialDate, nextCursor) {
-    let search = (`query: "is:${status} is:${type} is:public repo:${org}/${repo} created:>${initialDate}", type: ISSUE, first: 100`)
-    if (nextCursor) {
-        search = search + `, after: "${nextCursor}"`
-    }
-    console.log(search)
+  let search = (`query: "is:${status} is:${type} is:public repo:${org}/${repo} created:>${initialDate}", type: ISSUE, first: 100`);
+  if (nextCursor) {
+    search = `${search}, after: "${nextCursor}"`;
+  }
+  logger.log(search);
 
-    const query = `
+  const query = `
     {
         search(${search}) {
           pageInfo{
@@ -66,10 +68,10 @@ function buildQueryPRSeach(status, type, org, repo, initialDate, nextCursor) {
       }
     `;
 
-    return query;
+  return query;
 }
 
 module.exports = {
-    buildQueryPRByOrg,
-    buildQueryPRSeach
-}
+  buildQueryPRByOrg,
+  buildQueryPRSeach,
+};
