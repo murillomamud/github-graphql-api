@@ -9,7 +9,6 @@ async function main(){
     const initialDate = '2022-01-01';
     const status = 'open';
     const type = 'pr';
-    let prs = [];
     let hasNextPage = true;
     let nextCursor = null;
 
