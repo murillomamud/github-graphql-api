@@ -12,7 +12,7 @@ async function main() {
   const result = await fetchData(status, type, org, repo, initialDate, undefined);
 
   logger.log(result);
-  logger.log(result.length);
+  logger.log(`There are ${result.length} PRs open for ${org}/${repo}`);
 }
 
 main();
