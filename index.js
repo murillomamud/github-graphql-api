@@ -9,7 +9,7 @@ async function main() {
   const status = 'open';
   const type = 'pr';
 
-  const result = await fetchData(status, type, org, repo, initialDate, undefined);
+  const result = await fetchData(status, type, org, repo, initialDate);
 
   logger.log(result);
   logger.log(`There are ${result.length} PRs open for ${org}/${repo}`);
