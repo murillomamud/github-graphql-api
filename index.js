@@ -1,10 +1,7 @@
-const axios = require('axios');
-const dotenv = require('dotenv');
-const { buildQueryPRSeach } = require('./queries/query-pr');
 
-dotenv.config();
+const { fetchData } = require('./src/fetchData');
 
-const { GITHUB_TOKEN } = process.env;
+
 
 async function main(){
     const org = 'facebook';
@@ -12,35 +9,15 @@ async function main(){
     const initialDate = '2022-01-01';
     const status = 'open';
     const type = 'pr';
-    const url = 'https://api.github.com/graphql';
-
+    let prs = [];
     let hasNextPage = true;
     let nextCursor = null;
-    let prs = [];
-    while (hasNextPage) {
-        const query = buildQueryPRSeach(status, type, org, repo, initialDate, nextCursor);
 
-        const response = await axios.post(url, { query }, {
-            headers: {
-                Authorization: `bearer ${GITHUB_TOKEN}`
-            }
-        });
-
-        const { data } = response;
-        if(data.errors){
-            console.log(data.errors);
-            break;
-        }
-        const { data: { search: { pageInfo: { hasNextPage: next, endCursor }, edges } } } = data;
-
-        hasNextPage = next;
-        nextCursor = endCursor;
-
-        prs = prs.concat(edges);        
-    }
+    const result = await fetchData(status, type, org, repo, initialDate, hasNextPage, nextCursor);
     
-    console.log(prs);
+    console.log(result);
     console.log(hasNextPage, nextCursor);
+    console.log(result.length);
     
 }
 
