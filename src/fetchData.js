@@ -23,7 +23,7 @@ async function fetchData(status, type, org, repo, initialDate, nextCursor) {
   const { data } = response;
   if (data.errors) {
     logger.log(data.errors);
-    return;
+    return [];
   }
   const { data: { search: { pageInfo: { hasNextPage: next, endCursor }, edges } } } = data;
 
@@ -33,7 +33,6 @@ async function fetchData(status, type, org, repo, initialDate, nextCursor) {
     await fetchData(status, type, org, repo, initialDate, endCursor);
   }
 
-  // eslint-disable-next-line consistent-return
   return prs;
 }
 
